@@ -1,6 +1,6 @@
 import numpy as np
 
-from computeCost import computeCost
+from L1.computeCost import computeCost
 
 
 def gradientDescent(X, y, theta, alpha, iters):
