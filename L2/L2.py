@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from numpy import argmin
 
 from L1.gradientDescent import gradientDescent
+from normalization import normalize
 
 # Создайте с-му, предсказывающую стоимость б/у тракторов,
 # основываясь на количестве передач и скорости оборота двигателя.
@@ -11,13 +12,6 @@ from L1.gradientDescent import gradientDescent
 # а) методом градиентного спуска, при этом подобрать наилучшую скорость обучения.
 # б) используя аналитическое решение.
 # Сравнить полученные результаты
-
-def normalize(X):
-    mean = X.mean(axis=0)
-    std = X.std(axis=0)
-    X_norm = (X - mean) / std
-    return X_norm, mean, std
-
 
 data = pd.read_csv("ex1data2.txt", header=None, names=["Обороты", "Передачи", "Цена"])
 
@@ -94,14 +88,14 @@ ax = fig.add_subplot(111, projection='3d')
 
 ax.scatter(all_learning_rates, all_iterations, all_costs , c=all_costs) # cmap='coolwarm'
 
-ax.set_xlabel('Alpha')
-ax.set_ylabel('Iterations')
-ax.set_zlabel('Cost')
+ax.set_xlabel('Альфа')
+ax.set_ylabel('Итерации')
+ax.set_zlabel('Стоимость')
 
 
 # Анализ результата
 alpha_opt = alphas[argmin(results)]
-print(alpha_opt)
+print(alpha_opt, min(results))
 theta_opt, costs_best = gradientDescent(X_normalized, y, theta_init, alpha_opt, iter)
 
 

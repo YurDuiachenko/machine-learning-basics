@@ -1,12 +1,15 @@
+import csv
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 from tabulate import tabulate
 
+from write import write_csv
 from plot import plotData
 
 
-# z = w₀ + w₁x₁ + w₂x₂
+# z(x, w) = w₀ + w₁x₁ + w₂x₂
 def z(x, w):
     return np.dot(x, w)
 
@@ -33,6 +36,8 @@ Os = [
     [0.2, 0.85]
 ]
 
+xslw_row = []
+
 plotData(Xs, Os)
 plt.show()
 
@@ -58,7 +63,6 @@ while epoch < 100:
         x = S[i]
 
         flag = 1
-
         if (i < len(Os)):
             flag = 0
 
@@ -67,9 +71,9 @@ while epoch < 100:
             w += (flag - pred_y) * x
             is_weight_changed = True
 
-        rows.append([
-            '+' if flag else '-', x[0], x[1], x[2], w[0], w[1], w[2], z(x, w), pred_y, '+' if (pred_y == flag) else '-'
-        ])
+        row = ['+' if flag else '-', x[0], x[1], x[2], w[0], w[1], w[2], z(x, w), pred_y, '+' if (pred_y == flag) else '-']
+        xslw_row.append(";".join([str(i) for i in row]))
+        rows.append(row)
 
     print(tabulate(rows, headers=fields, floatfmt=".2f"))
 
@@ -88,3 +92,5 @@ x2 = a * x1 + b
 plotData(Xs, Os)
 plt.plot(x1, x2)
 plt.show()
+
+write_csv("result.csv", ";".join(fields), xslw_row)
