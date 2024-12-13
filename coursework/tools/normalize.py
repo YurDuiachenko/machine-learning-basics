@@ -6,4 +6,4 @@ def normalize(X):
     std = np.std(X, axis=0)
     std[std == 0] = 1
 
-    return (X - mean) / std
+    return (X - mean) / std, mean, std

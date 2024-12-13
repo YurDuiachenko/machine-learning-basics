@@ -37,5 +37,4 @@ def read_csv(path):
 
 data, legend = read_csv('../data/Loan_Default_Normalized_Cleaned.csv')
 data = shuffle(data)
-
 write_csv('../data/Loan_Default_Normalized_Cleaned_Mixed.csv', legend, data)

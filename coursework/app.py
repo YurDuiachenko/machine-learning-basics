@@ -1,17 +1,17 @@
 import numpy as np
 import joblib
 
-theta = joblib.load('weights.pkl')
+theta = joblib.load('pkl/weights.pkl')
+mean, std = joblib.load('pkl/stat.pkl')
 
 
 def predict(X):
     X = np.array(X)
-    mean = np.mean(X, axis=0)
-    std = np.std(X, axis=0)
     X_normalized = (X - mean) / std
     X_normalized = np.concatenate([[1], X_normalized])
 
     return X_normalized.dot(theta)
+
 
 def get_input(prompt):
     while True:
@@ -25,7 +25,11 @@ def get_input(prompt):
             print("Ошибка ввода. Пожалуйста, введите правильное значение.")
 
 
-loan_limit = get_input("Введите одобренную сумму кредита (loan_limit): ")
+# $266500
+print(predict(
+    [1, 0, 1, 4, 0, 0.0, 120.0, 0, 0, 638000.0, 2, 1, 9960.0, 1, 675, 4, 0, 41.77115987, 0, 37.0, 1]))
+
+loan_limit = get_input("Введите вид лимита кредита (loan_limit): ")
 approv_in_adv = get_input("Введите статус одобрения (approv_in_adv): ")
 loan_type = get_input("Введите тип кредита (loan_type): ")
 loan_purpose = get_input("Введите цель кредита (loan_purpose): ")
@@ -47,27 +51,10 @@ status = get_input("Введите статус заявки (Status): ")
 dt31 = get_input("Введите значение dt31: ")
 gender = get_input("Введите пол заемщика (Gender): ")
 
+x = [loan_limit, approv_in_adv, loan_type, loan_purpose,
+     business_or_commercial, upfront_charges, term, prortization,
+     interest_only, property_value, occupancy_type, total_units,
+     income, credit_type, credit_score, age,
+     submission_of_application, LTV, status, dt31, gender]
 
-# 1
-# 0
-# 1
-# 1
-# 0
-# 6260.0
-# 360.0
-# 0
-# 0
-# 468000.0
-# 1
-# 1
-# 4920.0
-# 1
-# 647
-# 3
-# 0
-# 93.26923077
-# 0
-# 42.0
-# 0
-#
-# 436500
+print("Сумма кредита: ", predict(x))
